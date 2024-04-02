@@ -1,9 +1,12 @@
+import HeroSection from "@/components/HeroSection";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex"></div>
+    <main className="min-h-screen flex-col items-center justify-center">
+      <div className="xl:w-[50%] w-full items-center font-mono flex flex-col ">
+        <HeroSection/>
+      </div>
     </main>
   );
 }
