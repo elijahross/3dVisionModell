@@ -5,14 +5,40 @@ import { useGLTF, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 
 export default function Modell() {
+  const snippet = {text:`
+    class `,
+                    text2:` extends Stack {
+        constructor(scope, id, props) {
+          super(scope, id, props);
+      
+          const `,
+                    text3:` = new Function(this, '`,
+                    text4:`', {
+            runtime: Runtime.NODEJS_14_X,
+            handler: 'index.handler',
+            code: `,
+                    text5:`.fromAsset('lambda'), 
+            timeout: Duration.seconds(30), 
+          });
+      
+          Serverless.addToRolePolicy(new PolicyStatement({
+            actions: ['s3:GetObject'], 
+            resources: ['arn:`,
+                    text6:`:s3:::your-bucket/*'], 
+          }));
+    
+          new CfnOutput(this, 'MLModelLambdaARN', {
+            value: mlModel`,
+                    text7:`.functionArn,
+          });`};
   const cameraRef = useRef();
   const modelRef = useRef();
   const { scene, nodes, materials } = useGLTF("VisionPro.glb", true);
   const [coordinates, setCoordinates] = useState({ x: "", y: "" });
 
   function captureCoordinates(e) {
-    const movementArea = document.getElementById("canvas");
-    const boundingBox = movementArea.getBoundingClientRect();
+    const movementArea = document.getElementById("canvas") || null;
+    const boundingBox = movementArea.getBoundingClientRect() || null;
 
     document.onpointermove = captureMovement;
     function captureMovement(e) {
@@ -36,7 +62,18 @@ export default function Modell() {
       className="min-h-screen flex-col w-full flex items-center m-auto justify-center"
       onMouseOver={(e) => captureCoordinates()}
     >
-      <div className="xl:w-[50%] w-[100vw] h-[100vh] items-center font-mono flex flex-col ">
+      <div className="relative items-center m-auto self-center transition-all duration-700 font-mono flex flex-col hover:scale-110">
+      <div className='text-[11px] text-left text-gray w-full pointer-events-none'>
+                <pre>
+                    {snippet.text}<code id="sMLM" className='texthighlight'>MLModel</code><code id="hMLM" className='textspace'>MLModel</code>{snippet.text2}
+                    <code id="sservl" className='texthighlight'>Serverless</code><code id="hservl" className='textspace'>Serverless</code>{snippet.text3}
+                    <code id="sdata" className='texthighlight'>Data Analyses</code><code id="hdata" className='textspace'>Data Analyses</code>{snippet.text4}
+                    <code id="spipe" className='texthighlight'>Pipeline</code><code id="hpipe" className='textspace'>Pipeline</code>{snippet.text5}
+                    <code id="saws" className='texthighlight'>aws</code><code id="haws" className='textspace'>aws</code>{snippet.text6}
+                    <code id="slam" className='texthighlight'>Lambda</code><code id="hlam" className='textspace'>Lambda</code>{snippet.text7}
+                </pre>
+            </div>
+        <div className="absolute top-[50%] left-[50%] xl:w-[50%] w-[100vh] h-[100vh]n scale-75 hover:scale-100 opacity-0 hover:opacity-100 transition-all duration-1000 items-center m-auto self-center">
         <Canvas
           id="canvas"
           shaodows
@@ -77,6 +114,7 @@ export default function Modell() {
             />
           </Suspense>
         </Canvas>
+        </div>
       </div>
     </main>
   );
