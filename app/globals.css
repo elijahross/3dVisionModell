@@ -25,3 +25,30 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* Modell Page */
+.lightspot1 {
+  background: linear-gradient(90deg, #f4c4f3 0%, #fc67fa 10%);
+  filter: blur(100px);
+  opacity: 0.8;
+  -webkit-filter: blur(90px);
+}
+
+.lightspot2 {
+  background: #d58f0c;
+  filter: blur(80px);
+  opacity: 0.8;
+  -webkit-filter: blur(90px);
+}
+
+.texthighlight {
+  transition: all 1s ease-out;
+  transition-duration: 1000;
+  z-index: -10;
+}
+
+.textspace {
+  @apply text-transparent hidden transition-all duration-1000 tracking-normal ease-out;
+}
+
+/* END: Modell Page */
